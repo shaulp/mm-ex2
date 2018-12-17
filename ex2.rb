@@ -39,9 +39,6 @@ begin
 	mysql = Mysql2::Client.new(host:"localhost", username:"ruby", password:"rubymmuze", database:"ruby_exercise")
 
 	run_stm = mysql.prepare("insert into runs(dirname, rundate, totals) values(?,NOW(),?);")
-	# insert_sql = %(
-	# 	"insert into runs(dirname, rundate, totals) values('#{dirname}',NOW(),#{con.count});"
-	# )
 	run_stm.execute dirname, con.count
 	run_id = mysql.last_id
 
@@ -49,7 +46,7 @@ begin
 	con.each do |k,v|
 		term_stm.execute run_id, k, v.count, v.variations.join(',')
 	end
-	puts ""
+	puts "Finish inserting into db with run_id #{run_id}"
 
 rescue StandardError => e
 	puts "Error in EX2: #{e.message}"
